@@ -1,0 +1,62 @@
+// GhostGrow Web-App
+// Automatisiertes Instagram-Tool (Demo-Version)
+
+import { useState } from "react";
+import { Button } from "@/components/ui/button";
+import { Card, CardContent } from "@/components/ui/card";
+import { Input } from "@/components/ui/input";
+import { Instagram } from "lucide-react";
+
+export default function GhostGrowApp() {
+  const [username, setUsername] = useState("");
+  const [logs, setLogs] = useState([]);
+  const [isRunning, setIsRunning] = useState(false);
+
+  const handleStart = () => {
+    if (!username) return alert("Bitte gib einen Benutzernamen ein.");
+    setIsRunning(true);
+    setLogs([`Starte Analyse von @${username}...`]);
+    setTimeout(() => {
+      setLogs((prev) => [
+        ...prev,
+        "✅ 20 Follower analysiert",
+        "✅ 15 davon automatisch gefolgt",
+        "✅ 10 Beiträge geliked",
+        "Fertig! 🥳",
+      ]);
+      setIsRunning(false);
+    }, 3000);
+  };
+
+  return (
+    <main className="min-h-screen p-6 bg-black text-white">
+      <Card className="max-w-xl mx-auto bg-zinc-900 text-white rounded-2xl shadow-lg">
+        <CardContent className="p-6">
+          <h1 className="text-3xl font-bold mb-4 flex items-center gap-2">
+            <Instagram className="text-pink-500" /> GhostGrow
+          </h1>
+          <p className="text-zinc-300 mb-6">
+            Folge automatisch den Followern deiner Mitbewerber und like ihre Beiträge. Steigere dein Wachstum mit KI-Intelligenz.
+          </p>
+          <Input
+            placeholder="Mitbewerber-Account eingeben (z.B. ghost_ai)"
+            value={username}
+            onChange={(e) => setUsername(e.target.value)}
+            className="mb-4"
+          />
+          <Button onClick={handleStart} disabled={isRunning}>
+            {isRunning ? "Wird ausgeführt..." : "Analyse starten"}
+          </Button>
+
+          {logs.length > 0 && (
+            <div className="mt-6 space-y-2 text-sm">
+              {logs.map((log, idx) => (
+                <div key={idx}>• {log}</div>
+              ))}
+            </div>
+          )}
+        </CardContent>
+      </Card>
+    </main>
+  );
+}
